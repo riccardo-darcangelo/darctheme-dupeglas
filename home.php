@@ -8,175 +8,125 @@
 ?>
 <?php get_header(); ?>
 <div class="home">
-    <section class="hero" style="background-image: url(<?php echo get_theme_mod('homepage_hero_feature_img'); ?>);">
-        <div class="hero-wrapper">
-            <h1>Hello World!<br> I'm <bdi>Riccardo</bdi></h1>
-            <h2>Full-Stack Entwickler <br> & UX-UI-Designer</h2>
-            <a href="#" class="cta">Erfahre mehr</a>
+    <section class="hero section" style="background-image: url('<?php echo get_theme_mod('homepage_hero_bg_img'); ?>;')">
+		<div class="hero-img">
+            <img src="<?php echo get_theme_mod('homepage_hero_feature_img'); ?>" alt="...">
         </div>
-        <div class="scroll-down-indicator">
-            <div class="field">
-                <div class="mouse"></div>
-            </div>
+        <div class="hero-title">
+            <h1><?php echo get_theme_mod('homepage_hero_title'); ?></h1>
         </div>
     </section>
 
-    <!-- Services -->
-    <section class="section">
-        <div class="section-title">
-            <h3><b>Meine</b> Leistungen</h3>
-            <hr>
-            <div class="services-wrapper">
-                <div class="card">
-                    <div class="service-icon">
-                        <img src="<?php bloginfo('template_url'); ?>/assets/icons/dev_light.webp" alt="development">
-                    </div>
-                    <h4>Web-, App- & Softwareentwicklung</h4>
-                    <div class="text">
-                        <p>Ich entwickle Deine Webseite, App oder Software mit modernster Technologie.</p>
-                    </div>
-                    <a href="#">Erfahre mehr <i class="fa-light fa-arrow-right"></i></a>
-                </div>
-                <div class="card">
-                    <div class="service-icon">
-                        <img src="<?php bloginfo('template_url'); ?>/assets/icons/design_light.png" alt="design">
-                    </div>
-                    <h4>UX & UI Design</h4>
-                    <div class="text">
-                        <p>Meine Designs sind stets Human-Centered ausgelegt auf die bestmögliche User-Experince.</p>
-                    </div>
-                    <a href="#">Erfahre mehr <i class="fa-light fa-arrow-right"></i></a>
-                </div>
-                <div class="card">
-                    <div class="service-icon">
-                        <img src="<?php bloginfo('template_url'); ?>/assets/icons/wordpress_light.webp" alt="Wordpress">
-                    </div>
-                    <h4>Wordpress</h4>
-                    <div class="text">
-                        <p>Ich entwickle dein Theme oder Plugins ausgelegt auf beste Performance.</p>
-                    </div>
-                    <a href="#">Erfahre mehr <i class="fa-light fa-arrow-right"></i></a>
-                </div>
-                <div class="card">
-                    <div class="service-icon">
-                        <img src="<?php bloginfo('template_url'); ?>/assets/icons/ecommerce_light.webp" alt="eCommerce">
-                    </div>
-                    <h4>eCommerce</h4>
-                    <div class="text">
-                        <p>Du möchtest deinem eigenen Webshop verkaufen? Ich entwickle die passende eCommerce-Lösungen.</p>
-                    </div>
-                    <a href="#">Erfahre mehr <i class="fa-light fa-arrow-right"></i></a>
-                </div>
-                <div class="card">
-                    <div class="service-icon">
-                        <img src="<?php bloginfo('template_url'); ?>/assets/icons/corporate_light.webp" alt="Corporate Design">
-                    </div>
-                    <h4>Corporate Design & Identity</h4>
-                    <div class="text">
-                        <p>Ich helfe dir bei der Entwicklung deines Unternehmensdesign und Unternehmensidentität.</p>
-                    </div>
-                    <a href="#">Erfahre mehr <i class="fa-light fa-arrow-right"></i></a>
-                </div>
+    <!-- Populer collection -->
+    <!-- <section class="collection section mt">
+        <div class="collection-title">
+            <h3><b>Beliebte</b> Kollektion</h3>
+            <div class="more-btn">
+                <a href="<?php echo home_url() . '/shop/?orderby=popularity/'; ?>">Entdecke mehr</a>
             </div>
         </div>
-    </section>
-
-    <!-- About -->
-    <section class="section">
-        <div class="about-wrapper">
-            <div class="about-img">
-                <div class="img-orange-border"></div>
-                <img src="<?php bloginfo('template_url'); ?>/assets/img/about_me_cropped.png" alt="Riccardo D'Arcangelo">
-            </div>
-            <div class="about-text">
-                <div class="section-title">
-                    <h3><b>Über</b> Mich</h3>
-                    <hr>
-                </div>
-
-                <p>
-                Ich bin Riccardo, Designern und Fullstack-Entwicklern aus Augsburg. Ich bin spezialisiert auf die Entwicklung von Webseiten, Webservices und modernen Apps. Meine Motivation die neuste Technik mit modernem Design zu kombinieren. Neben meiner klassischen Tätigkeit unterstütze ich meine Kunden auch beim entwerfen eines Corporate Design und einer Corporate Identity. Außerdem unterstütze ich auch bei der Entwicklung der Social Media Kanäle.
-                <br><br>
-                Als Designer und Entwickler in Augsburg bin ich für dich ein zuverlässiger Ansprechpartner und finde individuelle Lösungen für deinen Erfolg. Unverwechselbar und effektiv: Ich bringen dein Business nach vorn!
-                </p>
-            </div>
+        <div class="collection-products">
+            <?php echo do_shortcode('[products limit="6" best_selling]') ?>
         </div>
-    </section>
+    </section>-->
 
-    <!-- My Skills -->
-    <section class="section skills" style="background-image: url('<?php bloginfo('template_url'); ?>/assets/img/designer.jpg');">
-        <div class="section-title outer-skills" style="position: relative;">
-            <h3>“ Der Unterschied von Design zu Kunst ist, Design hat immer einer Funktion ”</h3>
-            <div class="skills-wrapper">
-                <div class="skill card">
-                    <h4>UX/UI-Design</h4>
-                    <p>
-                    Design beschränkt sich nicht nur auf das Aussehen, sondern ist auch abhängig von der Nutzererfahrung. Ein gutes Design lenkt den Nutzer intuitiv durch das Produkt und an sein Ziel.
-                    <br> <br>
-                    „Keep it simple“ und lass das Design für dich Sprechen.
-                    </p>
-                    <br>
-                    <h4>Alles ist Kopfsache!</h4>
-                    <p>
-                    Jedes Design und jedes Element erzeugen Bilder und Assoziationen im Kopf des Betrachters. Beim Neurodesign mache ich mir genau das zu Nutze.
-                    <br> <br>
-                    Durch Farben, Formen und Kompositionen erzeuge ich mit meinen Designs echte Gefühle und Verbundenheit zu Deinem Produkt.
-                    </p>
-                </div>
-                <div class="skill card">
-                    <h4>Das benötigt ein gutes Design</h4>
-                    <div class="skill-lvl">
-                        <label>Farb- & Formverständnis</label>
-                        <div class="lvl"><div id="lvl-color"></div></div>
-                    </div>
-                    <div class="skill-lvl">
-                        <label>Microtransaktions</label>
-                        <div class="lvl"><div id="lvl-micro"></div></div>
-                    </div>
-                    <div class="skill-lvl">
-                        <label>Simple & präzise Nutzerführung</label>
-                        <div class="lvl"><div id="lvl-user"></div></div>
-                    </div>
-                    <div class="skill-lvl">
-                        <label>User Experience</label>
-                        <div class="lvl"><div id="lvl-ux"></div></div>
-                    </div>
-                    <div class="skill-lvl">
-                        <label>Liebe zum Detail</label>
-                        <div class="lvl"><div id="lvl-detail"></div></div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </section>
-
-    <!-- Portfolio -->
-    <section class="portfolio">
-        <div class="section-title">
-            <h3><b>Mein</b> Portfolio</h3>
-            <hr>
+    <!-- Categories -->
+    <section class="collection section mt">
+        <div class="collection-title">
+            <h3><b>Unsere</b> Düfte</h3>
         </div>
         <div>
-            <div class="post-wrapper">
-            <?php while ( have_posts() ) : the_post(); // standard WordPress loop. ?>
-
-                <article class="portfolio-post" id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-                    <a href="<?php the_permalink();?>">
-                        <div class="post-img">
-                            <?php the_post_thumbnail(); ?>
-                        </div>
-                        <div class="post-content">
-                            <div class="inner-post-content">
-                                <h4><?php the_title(); ?></h4>
-                                <?php the_category(); ?>
-                                <hr>
-                            </div>
-                        </div>
+            <div class="dg-category">
+                <div class="wrapper-card" id="woman">
+                    <a href="<?php echo home_url() . '/produkt-kategorie/damenparfuem/'; ?>">
+                        <img src="<?php echo get_theme_mod('homepage_category_woman_img'); ?>" alt="damenduft">
                     </a>
-                </article>
+                    <div class="card-subtext">
+                        <h4><b>Für</b> Damen</h4>
+                    </div>
+                </div>
+                <div class="wrapper-card" id="men">
+                    <a href="<?php echo home_url() . '/produkt-kategorie/herrenparfum/'; ?>">
+                        <img src="<?php echo get_theme_mod('homepage_category_men_img'); ?>" alt="herrenduft">
+                    </a>
+                    <div class="card-subtext">
+                        <h4><b>Für</b> Herren</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="dg-category">
+                <div class="wrapper-card" id="luxury">
+                    <a href="<?php echo home_url() . '/produkt-kategorie/luxury-line/'; ?>">
+                        <img src="<?php echo get_theme_mod('homepage_category_luxury_img'); ?>" alt="luxury line">
+                    </a>
+                    <div class="card-subtext">
+                        <h4><b>Luxury</b> Line</h4>
+                    </div>
+                </div>
+                <div class="wrapper-card" id="unisex">
+                    <a href="<?php echo home_url() . '/produkt-kategorie/unisex-line/'; ?>">
+                        <img src="<?php echo get_theme_mod('homepage_category_unisex_img'); ?>" alt="unisex line">
+                    </a>
+                    <div class="card-subtext">
+                        <h4><b>Unisex</b> Line</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <?php endwhile; // end of the loop. ?>
+    <!-- Populer collection -->
+    <section class="section mt populer">
+        <div class="collection-title">
+            <h3><b>Neuste</b> Produkte</h3>
+            <div class="more-btn">
+                <a href="<?php echo home_url() . '/shop/?orderby=date/'; ?>">Entdecke mehr</a>
+            </div>
+        </div>
+        <div class="dg-new-products">
+            <?php echo do_shortcode('[products limit = "4" orderby = "id" order = "DESC" visible = "visible"]') ?>
+        </div>
+    </section>
+	
+	<!-- Feature -->
+    <section class="collection section mt">
+
+        <div>
+            <div class="dg-feature-card-wrapper">
+                <div class="feature-card">
+                    <img src="<?php echo bloginfo('template_url'); ?>/assets/icons/versand.webp" alt="...">
+					<h4>Kostenfreier Versand ab 100€</h4>
+                </div>
+				<div class="feature-card">
+                    <img src="<?php echo bloginfo('template_url'); ?>/assets/icons/ssl.webp" alt="...">
+					<h4>Bezahle Sicher & Schnell</h4>
+                </div>
+				<div class="feature-card">
+                    <img src="<?php echo bloginfo('template_url'); ?>/assets/icons/checked.webp" alt="...">
+					<h4>100% Authentischer Duft</h4>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About us -->
+    <section class="collection section mt">
+        <div class="collection-title">
+            <h3><b>Über</b> Uns</h3>
+        </div>
+        <div class="about-wrapper">
+            <div class="dg-about-img" id="about-theme">
+                <img src="<?php echo get_theme_mod('homepage_about_img'); ?> " alt="...">
+            </div>
+            <div class="dg-about-text">
+                <div>
+                    <h3><?php echo get_theme_mod('homepage_about_title'); ?></h3>
+                    <p><?php echo get_theme_mod('homepage_about_text'); ?></p>
+                    <div class="more-btn dg-about-btn">
+                        <a href="<?php echo get_theme_mod('homepage_about_link'); ?>" target="__blank"><?php echo get_theme_mod('homepage_about_link_text'); ?></a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

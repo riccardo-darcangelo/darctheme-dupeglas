@@ -1,14 +1,4 @@
 <?php
-require get_template_directory() . '/inc/function-admin.php';
-require get_template_directory() . '/inc/enqueue_admin_styles.php';
-
-add_action( 'after_switch_theme', 'darctheme_setup_redirect' );
-function darctheme_setup_redirect() {
-    if( isset( $_GET['activated'] ) ) {
-        wp_safe_redirect( admin_url('admin.php?page=darctheme_setup_wizard') );
-        exit;
-    }
-}
 
 function load_theme_styles() {
     wp_register_style('stylesheet', get_template_directory_uri() . '/css/theme.css', '', 1, 'all');
@@ -21,9 +11,6 @@ add_action('wp_enqueue_scripts', 'load_theme_styles');
 function load_theme_js() {
     wp_register_script('dg_theme_js', get_template_directory_uri() . '/js/theme.js', false, '', true);
     wp_enqueue_script('dg_theme_js');
-    wp_register_script('dg_theme_transitions_js', get_template_directory_uri() . '/js/transitions.js', false, '', true);
-    wp_enqueue_script('dg_theme_transitions_js');
-    wp_enqueue_script('jquery');
 }
 add_action('wp_enqueue_scripts', 'load_theme_js');
 
@@ -31,7 +18,37 @@ add_action('wp_enqueue_scripts', 'load_theme_js');
 add_theme_support( 'admin-bar', array( 'callback' => '__return_false' ) );
 add_theme_support('post-thumbnails');
 
+//Add woocommerce support
 
+function dg_add_woocommerce_support() {
+    add_theme_support('woocommerce');
+}
+add_action('after_setup_theme', 'dg_add_woocommerce_support');
+
+// Add Category Img to Archive Page
+add_action( 'woocommerce_archive_description', 'woocommerce_category_image', 2 );
+function woocommerce_category_image() {
+    if ( is_product_category() ){
+	    global $wp_query;
+	    $cat = $wp_query->get_queried_object();
+	    $thumbnail_id = get_term_meta( $cat->term_id, 'thumbnail_id', true );
+	    $image = wp_get_attachment_url( $thumbnail_id );
+	    if ( $image ) {
+		    echo '<div class="prod-cat-img"><img src="' . $image . '" alt="' . $cat->name . ' /></div>';
+		}
+	}
+}
+
+//Only show products in the front-end search results
+function lw_search_filter_pages($query) {
+if ($query->is_search) {
+$query->set('post_type', 'product');
+$query->set( 'wc_query', 'product_query' );
+}
+return $query;
+}
+ 
+add_filter('pre_get_posts','lw_search_filter_pages');
 
 // Register Menus
 function register_theme_menus() {
@@ -47,42 +64,11 @@ add_action( 'init', 'register_theme_menus' );
 
 // Add Customizer Functions
 function theme_customizer_function($wp_customize) {
-    // Header Panel
-    $wp_customize->add_panel('header', array(
-        'title' => 'Header',
-        'panel' => 'header',
-        'priority' => 10,
-        'capability' => 'edit_theme_options',
-    ));
-    $wp_customize->add_section('header_logo', array(
-        'title' => 'Logo',
-        'description' => __('Füge dein Logo ein'),
-        'priority' => 1,
-        'panel' => 'header',
-    ));
-    $wp_customize->add_setting('header_logo_img', array(
-        'type' => 'theme_mod',
-        'capability' => 'edit_theme_options',
-        'sanitize_callback' => 'esc_url_raw',
-        'transport'   => 'refresh',
-    ));
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'header_logo_control', array(
-        'label' => 'Logo',
-        'section' => 'header_logo',
-        'priority' => 3,
-        'settings' => 'header_logo_img',
-        'button_labels' => array(// All These labels are optional
-            'select' => 'Hinzufügen',
-            'remove' => 'Entfernen',
-            'change' => 'Ändern',
-            )
-    )));
-
     // Homepage Panel
     $wp_customize->add_panel('homepage', array(
         'title' => 'Homepage',
         'panel' => 'homepage',
-        'priority' => 20,
+        'priority' => 10,
         'capability' => 'edit_theme_options',
     ));
 
@@ -92,6 +78,30 @@ function theme_customizer_function($wp_customize) {
         'description' => __('Hero Bereich'),
         'priority' => 1,
         'panel' => 'homepage',
+    ));
+    $wp_customize->add_setting('homepage_hero_title', array(
+        'default' => __('Find your fragrance'),
+        'sanitize_callback' => 'sanitize_custom_text',
+        'type' => 'theme_mod',
+    ));
+    $wp_customize->add_control('homepage_hero_title_control', array(
+        'label' => 'Titel',
+        'section' => 'homepage_hero',
+        'priority' => 1,
+        'settings' => 'homepage_hero_title',
+        'type' => 'theme_mod',
+    ));
+    $wp_customize->add_setting('homepage_hero_subtitle', array(
+        'default' => 'Deine düfte in Augsburg',
+        'sanitize_callback' => 'sanitize_custom_text',
+        'type' => 'theme_mod',
+    ));
+    $wp_customize->add_control('homepage_hero_subtitle_control', array(
+        'label' => 'Untertitle',
+        'section' => 'homepage_hero',
+        'priority' => 2,
+        'settings' => 'homepage_hero_subtitle',
+        'type' => 'textarea',
     ));
     $wp_customize->add_setting('homepage_hero_feature_img', array(
         'type' => 'theme_mod',
@@ -110,25 +120,103 @@ function theme_customizer_function($wp_customize) {
             'change' => 'Ändern',
             )
     )));
-
-    // Brand Section
-    $wp_customize->add_section('homepage_brand', array(
-        'title' => 'Marken',
-        'description' => __('Marken Bearbeiten'),
-        'priority' => 2,
+	$wp_customize->add_setting('homepage_hero_bg_img', array(
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'   => 'refresh',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'homepage_hero_bg_img_control', array(
+        'label' => 'Hintergrundbild',
+        'section' => 'homepage_hero',
+        'priority' => 3,
+        'settings' => 'homepage_hero_bg_img',
+        'button_labels' => array(// All These labels are optional
+            'select' => 'Hinzufügen',
+            'remove' => 'Entfernen',
+            'change' => 'Ändern',
+            )
+    )));
+	
+	// Category Section
+    $wp_customize->add_section('homepage_category', array(
+        'title' => 'Kategorien | unsere Düfte',
+        'description' => __('Ändere Bilder der Kategorien.'),
+        'priority' => 3,
         'panel' => 'homepage',
     ));
-    $wp_customize->add_setting('homepage_brand_gal', array(
-        'default' => __('Clean & Unique'),
-        'sanitize_callback' => ''
+	// Woman
+    $wp_customize->add_setting('homepage_category_woman_img', array(
+        'default' => '',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'esc_url_raw'
     ));
-    $wp_customize->add_control('homepage_brand_gal_control', array(
-        'label' => 'Small Heading',
-        'section' => 'homepage_brand',
-        'priority' => 1,
-        'settings' => 'homepage_brand_gal',
-        'type' => '',
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'homepage_category_woman_img_control', array(
+        'label' => 'Damenduft',
+        'section' => 'homepage_category',
+        'priority' => 3,
+        'settings' => 'homepage_category_woman_img',
+        'button_labels' => array(// All These labels are optional
+            'select' => 'Hinzufügen',
+            'remove' => 'Entfernen',
+            'change' => 'Ändern',
+            )
+    )));
+	// Men
+    $wp_customize->add_setting('homepage_category_men_img', array(
+        'default' => '',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'esc_url_raw'
     ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'homepage_category_men_img_control', array(
+        'label' => 'Männerduft',
+        'section' => 'homepage_category',
+        'priority' => 3,
+        'settings' => 'homepage_category_men_img',
+        'button_labels' => array(// All These labels are optional
+            'select' => 'Hinzufügen',
+            'remove' => 'Entfernen',
+            'change' => 'Ändern',
+            )
+    )));
+	// Luxury
+    $wp_customize->add_setting('homepage_category_luxury_img', array(
+        'default' => '',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'esc_url_raw'
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'homepage_category_luxury_img_control', array(
+        'label' => 'Luxury Line',
+        'section' => 'homepage_category',
+        'priority' => 3,
+        'settings' => 'homepage_category_luxury_img',
+        'button_labels' => array(// All These labels are optional
+            'select' => 'Hinzufügen',
+            'remove' => 'Entfernen',
+            'change' => 'Ändern',
+            )
+    )));
+	// Unisex
+    $wp_customize->add_setting('homepage_category_unisex_img', array(
+        'default' => '',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'esc_url_raw'
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'homepage_category_unisex_img_control', array(
+        'label' => 'Unisex Line',
+        'section' => 'homepage_category',
+        'priority' => 3,
+        'settings' => 'homepage_category_unisex_img',
+        'button_labels' => array(// All These labels are optional
+            'select' => 'Hinzufügen',
+            'remove' => 'Entfernen',
+            'change' => 'Ändern',
+            )
+    )));
 
     // About Section
     $wp_customize->add_section('homepage_about', array(
@@ -296,35 +384,6 @@ function theme_customizer_function($wp_customize) {
         'section' => 'footer_two',
         'priority' => 4,
         'settings' => 'footer_two_social_two_link',
-    ));
-
-    $wp_customize->add_setting('footer_two_social_three_img', array(
-        'default' => '',
-        'type' => 'theme_mod',
-        'capability' => 'edit_theme_options',
-        'sanitize_callback' => 'esc_url_raw'
-    ));
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'footer_two_social_three_img_control', array(
-        'label' => 'Social 3',
-        'section' => 'footer_two',
-        'priority' => 5,
-        'settings' => 'footer_two_social_three_img',
-        'button_labels' => array(// All These labels are optional
-            'select' => 'Hinzufügen',
-            'remove' => 'Entfernen',
-            'change' => 'Ändern',
-            )
-    )));
-    $wp_customize->add_setting('footer_two_social_three_link', array(
-        'default' => '#',
-        'sanitize_callback' => 'esc_url_raw',
-        'type' => 'theme_mod',
-    ));
-    $wp_customize->add_control('footer_two_social_three_link_control', array(
-        'label' => 'Social 3 - Link',
-        'section' => 'footer_two',
-        'priority' => 6,
-        'settings' => 'footer_two_social_three_link',
     ));
     
 }
